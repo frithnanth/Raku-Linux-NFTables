@@ -172,6 +172,8 @@ For more details on nftables see L<https://wiki.nftables.org/wiki-nftables/index
 
 This module requires the libnftables library to be installed.
 
+On Debian-like systems install both libnftables1 and libnftables-dev.
+
 =head1 Installation
 
 To install it using zef (a module management tool):

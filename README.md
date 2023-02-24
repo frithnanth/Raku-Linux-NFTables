@@ -155,6 +155,7 @@ Prerequisites
 =============
 
 This module requires the libnftables library to be installed.
+On Debian-like systems install both libnftables1 and libnftables-dev.
 
 Installation
 ============
