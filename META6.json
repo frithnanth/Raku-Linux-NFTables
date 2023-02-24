@@ -1,0 +1,37 @@
+{
+  "auth": "zef:FRITH",
+  "authors": [
+    "Fernando Santagata"
+  ],
+  "build": {
+    "makefile-variables": {
+      "nfthelper": {
+        "resource": "libraries/nfthelper"
+      }
+    }
+  },
+  "build-depends": [
+    "Distribution::Builder::MakeFromJSON"
+  ],
+  "builder": "Distribution::Builder::MakeFromJSON",
+  "depends": [
+    "Distribution::Builder::MakeFromJSON"
+  ],
+  "description": "An interface to libnftables, a library to interact with Linux NFTables",
+  "license": "Artistic-2.0",
+  "name": "Linux::NFTables",
+  "perl": "6.d",
+  "provides": {
+    "Linux::NFTables": "lib/Linux/NFTables.rakumod",
+    "Linux::NFTables::Constants": "lib/Linux/NFTables/Constants.rakumod",
+    "Linux::NFTables::Raw": "lib/Linux/NFTables/Raw.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}

@@ -1,0 +1,21 @@
+SRC=src
+
+all : %nfthelper%
+
+# 'all', with compilation warnings
+debug :
+	%MAKE% "DBG=-Wall -g"  all
+
+%nfthelper% : $(SRC)/nft%O%
+	%LD% %LDSHARED% %LDFLAGS% -o %nfthelper% $(SRC)/nft%O% -lnftables
+
+%%O%: %.c
+	%CC% -I $(SRC) -c %CCSHARED% %CCFLAGS% -I/usr/include/nftables $(DBG) -o $@ $<
+
+clean :
+	@rm -f $(SRC)/*%O%
+	@rm -rf %nfthelper%
+	@rm Makefile
+
+realclean :
+	@rm -rf lib/.precomp

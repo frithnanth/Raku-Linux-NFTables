@@ -1,0 +1,54 @@
+#!/usr/bin/env raku
+
+use Test;
+use NativeCall;
+use lib 'lib';
+use Linux::NFTables::Raw;
+use Linux::NFTables::Constants;
+
+subtest 'data structure and flags' => {
+  my $ctx = nft_ctx_new(NFT_CTX_DEFAULT);
+  isa-ok $ctx, nft_ctx, 'create ctx data structure';
+
+  lives-ok { nft_ctx_set_dry_run($ctx, True) }, 'set dry run';
+  is nft_ctx_get_dry_run($ctx), 1, 'check dry run';
+
+  lives-ok { nft_ctx_set_optimize($ctx, NFT_OPTIMIZE_ENABLED) }, 'enable optimization';
+  is nft_ctx_get_optimize($ctx), 1, 'check optimization';
+
+  lives-ok { nft_ctx_output_set_flags($ctx, NFT_CTX_OUTPUT_REVERSEDNS) }, 'enable flag';
+  is nft_ctx_output_get_flags($ctx), 1, 'check flag';
+
+  lives-ok { nft_ctx_output_set_debug($ctx, NFT_DEBUG_SCANNER) }, 'enable debug';
+  is nft_ctx_output_get_debug($ctx), 1, 'check debug';
+
+  lives-ok { nft_ctx_add_include_path($ctx, '/my/path/to/add') }, 'add include path';
+  lives-ok { nft_ctx_clear_include_paths($ctx) }, 'clear include path';
+
+  ok { nft_ctx_add_var($ctx, 'int_if1 = eth0')  == 0 }, 'add variable';
+  lives-ok { nft_ctx_clear_vars($ctx) }, 'remove all variables';
+
+  lives-ok { nft_ctx_free($ctx) }, 'free ctx data structure';
+}
+
+if ? %*ENV<TEST_AUTHOR> {
+  subtest 'list ruleset' => {
+    my $filename = 't/test';
+    LEAVE { with $filename.IO { .unlink if .e } }
+
+    my $ctx = nft_ctx_new(NFT_CTX_DEFAULT);
+    is mnft_ctx_set_output($ctx, $filename),  1, 'set output file';
+    is mnft_ctx_set_error($ctx, '/dev/null'), 1, 'set error file';
+    nft_run_cmd_from_buffer($ctx, 'list ruleset');
+    is mnft_ctx_reset_output, 1, 'reset output file';
+    is mnft_ctx_reset_error, 1,  'reset error file';
+    ok ($filename.IO.lines)[0].starts-with('table'), 'check output';
+    nft_ctx_free($ctx);
+  }
+} else {
+  skip "list ruleset: this test needs to be run as root\n"
+       ~ "It just lists the present ruleset to a file\n"
+       ~ 'If you wish run it as "sudo PATH=</path/to/raku/directory> TEST_AUTHOR=1 t/01-raw.rakutest"', 1;
+}
+
+done-testing;

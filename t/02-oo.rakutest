@@ -1,0 +1,59 @@
+#!/usr/bin/env perl6
+
+use Test;
+use lib 'lib';
+use Linux::NFTables;
+use Linux::NFTables::Constants;
+
+subtest 'data structure and flags' => {
+  my Linux::NFTables $nft .= new;
+  isa-ok $nft, Linux::NFTables, 'object instantiation';
+  lives-ok { $nft.dry-run: True }, 'set dry run';
+  ok $nft.dry-run, 'check dry run';
+  lives-ok { $nft.dry-run: False }, 'reset dry run';
+  ok $nft.dry-run == False, 'check reset dry run';
+  lives-ok { $nft.flags: NFT_CTX_OUTPUT_REVERSEDNS }, 'set flags';
+  ok $nft.flags == NFT_CTX_OUTPUT_REVERSEDNS, 'check flags';
+  lives-ok { $nft.flags: NFT_CTX_OUTPUT_NONE }, 'reset flags';
+  ok $nft.flags == NFT_CTX_OUTPUT_NONE, 'check reset flags';
+  lives-ok { $nft.debug: NFT_DEBUG_SCANNER }, 'set debug flags';
+  ok $nft.debug == NFT_DEBUG_SCANNER, 'check debug flags';
+  lives-ok { $nft.debug: NFT_DEBUG_NONE }, 'reset debug flags';
+  ok $nft.debug == NFT_DEBUG_NONE, 'check reset debug flags';
+  ok $nft.add-path('/var/lib'), 'add include path';
+  ok $nft.clear-path, 'clear include path';
+  ok $nft.add-var('int_if1 = eth0'), 'add variable';
+  nok $nft.add-var('eth0'), 'check error adding a variable';
+  lives-ok { $nft.clear-vars }, 'clear all variables';
+}
+
+if ? %*ENV<TEST_AUTHOR> {
+  subtest 'list ruleset' => {
+    my $filename = 't/test';
+    LEAVE { with $filename.IO { .unlink if .e } }
+
+    my Linux::NFTables $nft .= new;
+    ok $nft.set-output($filename),  'set output file';
+    ok $nft.set-output, 'reset output file';
+    ok $nft.set-error('/dev/null'),  'set error file';
+    ok $nft.set-error, 'reset error file';
+    ok $nft.exec('list ruleset'), 'run command';
+    ok ($filename.IO.lines)[0].starts-with('table'), 'check output';
+
+    ok $nft.buffer-output(True), 'set output buffering';
+    $nft.exec('list ruleset');
+    ok $nft.get-output-buffer.lines[0].starts-with('table'), 'check output buffer';
+    ok $nft.buffer-output, 'reset output buffering';
+
+    ok $nft.buffer-error(True), 'set error buffering';
+    $nft.exec('list noruleset');
+    ok $nft.get-error-buffer.lines[0].starts-with('Error: syntax error'), 'check error buffer';
+    ok $nft.buffer-error, 'reset error buffering';
+  }
+} else {
+  skip "list ruleset: this test needs to be run as root\n"
+       ~ "It just lists the present ruleset to a file\n"
+       ~ 'If you wish run it as "sudo PATH=</path/to/raku/directory> TEST_AUTHOR=1 t/02-oo.rakutest"', 1;
+}
+
+done-testing;
