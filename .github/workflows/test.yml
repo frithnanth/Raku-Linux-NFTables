@@ -25,7 +25,7 @@ jobs:
       - name: Install libnftables
         run: |
           sudo apt update
-          sudo apt install libnftables1
+          sudo apt install libnftables1 libnftables-dev
       - name: Install Dependencies
         run: zef install --/test --test-depends --deps-only .
       - name: Install App::Prove6
