@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/frithnanth/raku-Linux-NFTables/actions/workflows/test.yml/badge.svg)](https://github.com/frithnanth/raku-Linux-NFTables/actions)
+
 NAME
 ====
 
