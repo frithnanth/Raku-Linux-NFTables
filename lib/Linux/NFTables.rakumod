@@ -1,4 +1,4 @@
-unit class Linux::NFTables:ver<0.0.1>:auth<zef:FRITH>;
+unit class Linux::NFTables:ver<0.0.2>:auth<zef:FRITH>;
 
 use Linux::NFTables::Raw;
 use Linux::NFTables::Constants;

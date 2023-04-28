@@ -1,6 +1,6 @@
 use v6;
 
-unit module Linux::NFTables::Constants:ver<0.0.1>:auth<zef:FRITH>;
+unit module Linux::NFTables::Constants:ver<0.0.2>:auth<zef:FRITH>;
 
 enum nft_debug_level is export (
   NFT_DEBUG_NONE       => 0x0,
