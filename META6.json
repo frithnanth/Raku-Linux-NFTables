@@ -27,6 +27,7 @@
     "Linux::NFTables::Raw": "lib/Linux/NFTables/Raw.rakumod"
   },
   "resources": [
+    "libraries/nfthelper"
   ],
   "source-url": "https://github.com/frithnanth/Raku-Linux-NFTables.git",
   "tags": [
