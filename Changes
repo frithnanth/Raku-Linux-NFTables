@@ -1,6 +1,8 @@
 Revision history for Linux-NFTables
 
 {{$NEXT}}
+
+0.0.3  2024-02-05T11:21:39Z
     - Drop the obsolete .absolute call :-)
 
 0.0.2  2023-04-28T16:43:27+02:00
