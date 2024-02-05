@@ -1,6 +1,7 @@
 Revision history for Linux-NFTables
 
 {{$NEXT}}
+    - Drop the obsolete .absolute call :-)
 
 0.0.2  2023-04-28T16:43:27+02:00
     - Add resources

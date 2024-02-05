@@ -4,7 +4,7 @@ unit module Linux::NFTables::Raw:ver<0.0.2>:auth<zef:FRITH>;
 
 use NativeCall;
 
-constant NFTHELPER = %?RESOURCES<libraries/nfthelper>.absolute;
+constant NFTHELPER = %?RESOURCES<libraries/nfthelper>;
 
 sub LIB {
   run('/sbin/ldconfig', '-p', :chomp, :out)
